@@ -5,6 +5,9 @@
     "description": "Personal Claude Code skills library"
   },
   "plugins": [
-    { "name": "zstack-skills", "source": "." }
+    {
+      "name": "zstack-skills",
+      "source": { "source": "github", "repo": "zaeem-rafiq/zstack-skills" }
+    }
   ]
 }
