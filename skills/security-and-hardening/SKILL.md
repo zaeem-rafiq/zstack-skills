@@ -5,9 +5,7 @@ description: >
   building or reviewing features that handle user input, authentication, financial data,
   API endpoints, or external integrations. Also trigger when someone says "security
   review", "harden this", "OWASP", "input validation", "secrets", "auth", "vulnerability",
-  or when a code-review-and-quality pass surfaces security concerns. Critical for Rafiq
-  B2B (financial screening API), Mirath (estate planning with sensitive family data), and
-  any feature that touches Supabase RLS, Clerk auth, or Plaid integrations. Outputs a
+  or when a code-review-and-quality pass surfaces security concerns. Outputs a
   security audit checklist or a set of hardening issues ready for tdd.
 ---
 
@@ -88,28 +86,30 @@ denied events, data modifications? Are logs protected from tampering?
 **A10 — SSRF.** Can the server be tricked into making requests to internal resources?
 Are webhook URLs validated? Are redirect URLs checked?
 
-### Step 3: Rafiq-Specific Checks
+### Step 3: Stack-Specific Checks
 
-These apply to the Rafiq Labs stack specifically:
+For your specific stack, document the recurring checks you always run. Examples
+of patterns worth codifying (replace with your own):
 
-**Supabase RLS.** Every table with user data must have RLS enabled. Test by querying
-as an unauthenticated user and as a different authenticated user. The Supabase service
-role key must never be used client-side.
+**Row-level security (Supabase, Postgres RLS, etc.).** Every table with user data
+must have RLS enabled. Test by querying as an unauthenticated user and as a
+different authenticated user. Service-role keys must never reach the client.
 
-**Clerk Auth.** Verify that Clerk middleware is applied to all protected routes. Check
-that webhook signatures are validated. Ensure session tokens are not logged.
+**Auth provider middleware (Clerk, Auth0, NextAuth, etc.).** Verify middleware
+is applied to all protected routes. Check that webhook signatures are validated.
+Ensure session tokens are not logged.
 
-**Plaid Integration.** Verify that Plaid access tokens are stored securely (encrypted
-at rest, never logged). Check that Plaid webhook signatures are validated. Ensure
-Plaid link tokens are single-use.
+**Financial data integrations (Plaid, Stripe, etc.).** Access tokens must be
+stored encrypted at rest and never logged. Webhook signatures must be validated.
+Link tokens should be single-use where applicable.
 
-**Rafiq B2B MCP Server.** The `methodology` parameter must be validated against the
-allowed enum (AAOIFI, DJIM, S&P, MSCI). The `madhab` parameter on `calculate_purification`
-must be validated against allowed values. Reject unknown parameters early.
+**API parameter validation.** All enum parameters must be validated against an
+allowed list. Reject unknown parameters early — do not coerce or default
+silently.
 
-**Mirath Estate Data.** Family composition, asset data, and beneficiary information are
-highly sensitive. Ensure all Mirath data is scoped to the authenticated user. PDF exports
-should not cache on CDN.
+**PII and sensitive document data.** Anything containing personal, financial,
+medical, or family data must be scoped to the authenticated user. Generated
+documents (PDFs, exports) should not cache on shared CDNs.
 
 ### Step 4: Produce Hardening Tasks
 
@@ -166,8 +166,8 @@ For each vulnerability found, create a hardening task in issue format:
   authenticated requests.
 - **Error responses include stack traces or internal paths.** Information leakage that
   helps attackers map your system.
-- **The `methodology` or `madhab` parameter accepts arbitrary strings.** Enum validation
-  must reject unknown values at the boundary.
+- **A domain enum parameter accepts arbitrary strings.** Enum validation must reject
+  unknown values at the boundary — not silently coerce or default.
 
 ## Verification
 

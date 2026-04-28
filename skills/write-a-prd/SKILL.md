@@ -208,7 +208,7 @@ mode, don't let it stay ambiguous. Ambiguous scope mode = scope creep during bui
 | "The grill-me brief is detailed enough to build from." | The brief captures the *problem*. The PRD captures the *solution contract*. They serve different purposes. Formalizing the brief into a PRD surfaces gaps that the brief intentionally left open. |
 | "I'll write the PRD after I prototype." | Prototypes that skip the PRD become production code. The PRD written after a prototype describes what you built, not what you should have built. Write the PRD, then prototype against it. |
 | "The requirements are obvious from the user story." | User stories describe intent. Requirements describe testable conditions. "As a user I want to filter stocks" has at least 8 hidden requirements (filter criteria, performance, empty states, persistence, etc.). Make them explicit. |
-| "Non-functional requirements are boilerplate — skip them." | Security, performance, and accessibility NFRs are where Rafiq B2B and Mirath can't afford to cut corners. Skipping them means they get discovered in production, not in the PRD review. |
+| "Non-functional requirements are boilerplate — skip them." | Security, performance, and accessibility NFRs are where products with sensitive data or regulated domains can't afford to cut corners. Skipping them means they get discovered in production, not in the PRD review. |
 
 ## Red Flags
 

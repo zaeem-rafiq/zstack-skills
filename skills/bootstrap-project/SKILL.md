@@ -44,12 +44,12 @@ If either arg is missing, ask interactively. Valid archetypes: `nextjs-web`,
 Ask the user for these values one at a time (OK to combine into a single
 `AskUserQuestion` call with multiple questions). Reasonable defaults shown in brackets:
 
-- **Project Name** (e.g., "Mirath") — human-readable
-- **Domain** (e.g., "getmirath.com") — production URL, or "none" if no domain yet
-- **Repo URL** (e.g., "github.com/zaeem-rafiq/mirath") — or "none" if not yet pushed
+- **Project Name** (e.g., "Acme") — human-readable
+- **Domain** (e.g., "acme.com") — production URL, or "none" if no domain yet
+- **Repo URL** (e.g., "github.com/your-org/acme") — or "none" if not yet pushed
 - **Linear Project ID** (UUID) — get from Linear → Settings → Projects → API
-- **Linear Team ID** (UUID) — usually the default team; known value: `1a6dcb82-d5c4-46cf-92ab-14ddaf3dc55f`
-- **Linear Keyword** (lowercase, e.g., "mirath") — used by orchestrator for routing
+- **Linear Team ID** (UUID) — usually the default team; find yours in Linear → Settings → API
+- **Linear Keyword** (lowercase, e.g., "acme") — used by orchestrator for routing
 - **AI Features** (`true`/`false`) — are there LLM-powered features? If yes, quality gate
   will chain in `eval-framework` automatically
 - **Phase** (default: "pre-launch") — options: pre-launch, launched, maintenance, sunset
@@ -197,7 +197,7 @@ Mark the bootstrap complete ONLY when ALL of these are true:
 3. `<path>/knowledge/` and `<path>/docs/` and `<path>/tasks/` directories exist.
 4. `~/.orchestrator/config.json` contains the new `projects` and
    `projectKeywords` entries and parses as valid JSON.
-5. `launchctl list com.rafiqlabs.orchestrator` shows the service running.
+5. `launchctl list com.your-org.orchestrator` shows the service running.
 6. Git guardrails hooks are installed (if git-initialized).
 7. First commit exists (if git-initialized).
 

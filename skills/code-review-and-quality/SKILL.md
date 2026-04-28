@@ -42,7 +42,7 @@ Beyond what tests cover — does the logic actually solve the right problem?
 - Are edge cases handled that tests might not cover (null inputs, empty arrays, negative numbers, Unicode, timezone issues)?
 - Is error handling correct? Are errors caught at the right level and surfaced appropriately?
 - Are there off-by-one errors, race conditions, or state management bugs?
-- For Islamic finance logic: does the implementation match the madhab/methodology rules correctly? Screening varies by methodology (AAOIFI, DJIM, S&P, MSCI), purification varies by madhab — are these correctly separated?
+- For domain-specific business logic: does the implementation match the documented domain rules correctly? When two concepts in your domain look similar but mean different things (e.g., one varies by classification, the other by jurisdiction), are they correctly separated in the code?
 
 ### Axis 2: Readability
 

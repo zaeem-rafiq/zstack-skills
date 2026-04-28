@@ -37,7 +37,7 @@ Rules for the red step:
 - ONE test. Not two. Not "a few related ones." One.
 - Test behavior, not implementation. "User can filter stocks by halal status" not
   "filterStocks function returns array."
-- The test name should read like a sentence: `test_zakat_calculation_uses_hanafi_nisab_threshold`
+- The test name should read like a sentence: `test_discount_calculation_applies_premium_tier_rate`
 - Start from the outside in — what does the user/caller see? Work inward.
 
 ### 🟢 Green: Make it pass with minimal code
@@ -81,11 +81,11 @@ When building from a prd-to-issues ticket:
 Start with the **happy path's simplest case**. Not the edge cases. Not the error
 handling. The most basic version of "it works."
 
-For a zakat calculator:
-1. First test: "calculates zakat on cash above nisab at 2.5%"
-2. Second test: "returns zero when cash is below nisab"
-3. Third test: "uses gold nisab threshold for Hanafi madhab"
-4. Fourth test: "uses different nisab threshold for Ja'fari madhab"
+For a discount calculator:
+1. First test: "applies 10% discount on orders above $100"
+2. Second test: "returns zero discount when order is below $100"
+3. Third test: "applies higher rate for premium tier customers"
+4. Fourth test: "applies different rate for first-time buyers"
 
 Each test adds ONE new behavior.
 
@@ -158,7 +158,7 @@ for one, stop — the rebuttal is the correct path.
 | "I already know the implementation, writing the test first is redundant." | If you know the implementation, the test will take 60 seconds. If you're wrong about the implementation, the test will save you 60 minutes. Either way, write it first. |
 | "This is just a refactor, existing tests cover it." | Run the tests. If they pass, great — the refactor is safe. If you haven't run them, you don't know that. The green bar is the proof, not your confidence. |
 | "I need to spike/prototype first, then backfill tests." | Spikes are for learning, not shipping. If you learned what you need, delete the spike and rebuild with TDD. Spike code that survives into production always rots. |
-| "There's a deadline — testing slows me down." | Untested code ships bugs during your highest-traffic window. Hajj season, Ramadan launch, investor demo — those are exactly when you cannot afford regressions. |
+| "There's a deadline — testing slows me down." | Untested code ships bugs during your highest-traffic window. A peak-traffic season, a launch event, an investor demo — those are exactly when you cannot afford regressions. |
 
 ## Red Flags
 

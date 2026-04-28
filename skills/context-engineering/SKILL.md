@@ -24,11 +24,11 @@ Context is the agent's working memory. Every token of context you provide displa
 token of reasoning capacity. The goal is maximum signal per token: the agent should know
 everything it needs and nothing it doesn't.
 
-This is especially critical for Rafiq Labs where domain knowledge (Islamic finance,
-madhab distinctions, AAOIFI standards) is specialized and easy to get wrong. An agent
-without the right context will conflate methodology with madhab, use the wrong nisab
-threshold, or ignore the screening-vs-purification boundary. Context engineering prevents
-these errors at the source.
+This is especially critical for products in specialized domains (regulated finance,
+healthcare, legal, religious practice) where domain knowledge is specialized and easy
+to get wrong. An agent without the right context will conflate concepts that look
+similar, use the wrong threshold, or ignore a critical boundary. Context engineering
+prevents these errors at the source.
 
 ## When to Use
 
@@ -50,8 +50,8 @@ This is where you encode:
 
 - **Project overview.** What is this? Who is it for? What stack?
 - **Architecture constraints.** Key patterns, boundaries, naming conventions.
-- **Domain rules.** The screening-vs-purification boundary. Madhab definitions.
-  AAOIFI compliance requirements.
+- **Domain rules.** The non-obvious boundaries between concepts that look similar.
+  Compliance requirements. Definitions that change behavior downstream.
 - **Workflow conventions.** Always assign Linear issues to a project. Always use TDD.
   Always run the skill chain.
 - **Tool configuration.** MCP servers, API keys locations, deployment targets.
@@ -64,8 +64,8 @@ reference files that are loaded on demand.
 
 Memory edits (Claude.ai's memory system) persist across sessions and encode:
 
-- **User identity and role.** CEO, co-founder, Columbia EMBA.
-- **Active priorities.** What's top of mind right now (Mirath launch, Hajj deadline).
+- **User identity and role.** Founder, engineer, student, etc.
+- **Active priorities.** What's top of mind right now (a product launch, a deadline, a sprint goal).
 - **Standing instructions.** Skill chain routing, workflow preferences.
 - **Project status.** Where each product is in its lifecycle.
 
@@ -81,8 +81,8 @@ This is the most detailed layer but the most ephemeral.
   message. Agents pay more attention to early context.
 - **Reference, don't repeat.** If a PRD is already in memory or a file, reference it
   by name rather than pasting it again.
-- **Prune when switching tasks.** If you shift from Mirath to Rafiq B2B mid-session,
-  explicitly state the switch so the agent deprioritizes Mirath context.
+- **Prune when switching tasks.** If you shift from one product or codebase to another
+  mid-session, explicitly state the switch so the agent deprioritizes the previous context.
 
 ### Layer 4: Tool Context — MCP + Web Search + File System
 
@@ -104,9 +104,9 @@ the start of each chat is itself a context engineering technique — it routes t
 to the right skill chain and mental model.
 
 Additional strategies:
-- Keep memory edits current. After major milestones (Mirath launch, YC application),
-  update memory to reflect new priorities.
-- Use the RAFIQ_CONTEXT.md pattern: a shared document that encodes the full project
+- Keep memory edits current. After major milestones (a launch, a fundraise, a major
+  decision), update memory to reflect new priorities.
+- Use a `PROJECT_CONTEXT.md` pattern: a shared document that encodes the full project
   state, loadable at the start of any session to eliminate re-establishment overhead.
 - When pasting code or files, include the file path and a one-line description of what
   it is and why you're sharing it.
@@ -130,7 +130,7 @@ The Orchestrator processes issues headlessly. Each issue must be self-contained:
 
 | Rationalization | Reality |
 |---|---|
-| "The agent should know this from training data." | Training data is stale, incomplete, and generic. Your project's specific constraints — madhab boundaries, Orchestrator conventions, Supabase RLS patterns — aren't in training data. Provide them explicitly. |
+| "The agent should know this from training data." | Training data is stale, incomplete, and generic. Your project's specific constraints — domain boundaries, internal conventions, your auth/database patterns — aren't in training data. Provide them explicitly. |
 | "I'll add context when the agent gets confused." | Reactive context is expensive — the agent has already produced wrong output that needs to be corrected. Proactive context prevents the wrong output from being generated. |
 | "The CLAUDE.md is already long enough." | If CLAUDE.md is over 500 lines, it's too long. Extract reference material into separate files. The CLAUDE.md should contain rules and constraints, not tutorials. |
 | "Memory edits are set — I don't need to update them." | Memory edits reflect priorities, and priorities change. Stale memory sends agents down outdated paths. Review and update after major milestones. |
@@ -140,7 +140,7 @@ The Orchestrator processes issues headlessly. Each issue must be self-contained:
 
 - **An agent produces output that ignores a known constraint.** This means the constraint
   isn't in the agent's context. Add it to CLAUDE.md or memory edits.
-- **An agent conflates methodology with madhab.** The screening-vs-purification boundary
+- **An agent conflates two domain concepts that should be kept separate.** The boundary
   isn't in context. Add the domain rule explicitly.
 - **The same context is re-established at the start of every session.** This is a signal
   that the context should be in memory edits or CLAUDE.md, not in conversation.
@@ -157,8 +157,9 @@ After setting up or updating context for a project, confirm every item below.
 - [ ] **CLAUDE.md exists and is under 500 lines.** Contains project overview, architecture
   constraints, domain rules, workflow conventions, and hard boundaries.
 - [ ] **Memory edits are current.** Reflect active priorities, not last month's priorities.
-- [ ] **Domain-specific rules are explicit.** Screening vs. purification boundary.
-  Madhab definitions. AAOIFI compliance. Whatever is specific to the project's domain.
+- [ ] **Domain-specific rules are explicit.** The non-obvious boundaries between
+  similar-looking concepts. Compliance requirements. Whatever is specific to the
+  project's domain.
 - [ ] **Issues are self-contained for Orchestrator runs.** Each issue has Context,
   Acceptance Criteria, and Technical Notes.
 - [ ] **Connected tools are documented.** The agent knows which MCP servers are available

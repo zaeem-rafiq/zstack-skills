@@ -7,8 +7,7 @@ description: >
   checklist", "go live", "deploy to production", "pre-launch", "ship it", "launch gate",
   or when the final phase of a prd-to-plan is complete. Covers pre-launch verification,
   rollback planning, staged rollouts, monitoring setup, and post-launch confirmation.
-  Outputs a launch checklist with pass/fail gates. Based on the Mirath launch gate
-  pattern, formalized for reuse across Rafiq Labs products.
+  Outputs a launch checklist with pass/fail gates.
 ---
 
 # Shipping and Launch
@@ -30,7 +29,7 @@ verify that the deployment actually works for users. The launch checklist bridge
 
 - Before any production deployment
 - When completing the final phase of an implementation plan
-- Before time-sensitive launches (Hajj season, Ramadan, investor demos)
+- Before time-sensitive launches (peak-traffic seasons, investor demos, marketing campaigns)
 - When the Orchestrator completes all issues for a feature and is ready to merge to main
 - When hotfixing a production issue
 
@@ -72,15 +71,16 @@ fails, stop and fix before continuing.
 #### Gate 5: Communication
 - [ ] Changelog updated (if user-facing changes)
 - [ ] App Store release notes drafted (if iOS update)
-- [ ] Partner/affiliate communications sent (if relevant — Mirath mosque partners)
+- [ ] Partner/affiliate communications sent (if relevant)
 - [ ] Internal team notified (Slack message with what's shipping)
 
 ### Step 2: Deploy
 
-Execute the deployment. For Rafiq Labs projects:
-- **Mirath (Vercel):** Merge to main triggers auto-deploy. Verify preview URL first.
-- **Rafiq B2B (Cloud Run):** Deploy via CI/CD pipeline. Verify health endpoint.
-- **Rafiq iOS:** Archive, upload to App Store Connect, submit for review.
+Execute the deployment. Common patterns by deploy target:
+- **Vercel / Netlify / Cloudflare Pages:** Merge to main triggers auto-deploy. Verify the preview URL first.
+- **Cloud Run / Lambda / Fly.io:** Deploy via CI/CD pipeline. Verify the health endpoint and check container logs for cold-start errors.
+- **iOS / App Store:** Archive, upload to App Store Connect, submit for review. Account for review latency.
+- **Android / Play Store:** Build a signed AAB, upload, push to internal track first.
 
 ### Step 3: Post-Launch Verification
 
@@ -107,7 +107,7 @@ in production — revert first, investigate second.
 | "We don't need a rollback plan for this change." | Every deployment needs a rollback plan. Even "safe" changes can interact with existing code in unexpected ways. The plan can be simple ("revert commit X"), but it must exist. |
 | "We'll set up monitoring after launch." | Launching without monitoring means you won't know something is broken until users tell you. By then, the damage is done. Monitoring goes in before the feature ships. |
 | "This is a small change — skip the checklist." | Small changes with no checklist are how typos reach production, env vars get forgotten, and RLS policies get missed. The checklist scales with the change — small change, quick checklist. |
-| "We're launching during Hajj season — no time for the full process." | Hajj season is exactly when you can't afford a broken launch. High traffic + high stakes = full checklist, no shortcuts. |
+| "We're launching during peak season — no time for the full process." | Peak season is exactly when you can't afford a broken launch. High traffic + high stakes = full checklist, no shortcuts. |
 | "The Orchestrator deployed it and tests pass — we're good." | The Orchestrator verifies code correctness. It doesn't verify production configuration, third-party integrations, or real user flows. Post-launch verification is a human responsibility (or an explicit automated check). |
 
 ## Red Flags

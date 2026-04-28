@@ -99,19 +99,24 @@ matches the decision.]
 ADRs are numbered sequentially: ADR-001, ADR-002, etc. Store them in
 `docs/adrs/` or `docs/decisions/` in the project root.
 
-## Rafiq Labs ADR Candidates
+## Example ADR Candidates
 
-These are decisions already made that deserve ADRs for institutional memory:
+Decisions in any non-trivial codebase that typically deserve an ADR:
 
-- **ADR: Use Streamable HTTP for Rafiq B2B MCP transport** (vs. SSE, stdio)
-- **ADR: Separate methodology from madhab in screening API** (screening varies by
-  methodology, purification by madhab — never conflate)
-- **ADR: Use Clerk for auth across Mirath and Rafiq** (vs. Supabase Auth, Auth0)
-- **ADR: Orchestrator uses Linear → Claude Code headless pipeline** (vs. GitHub Actions,
-  Managed Agents)
-- **ADR: Deploy Rafiq B2B to Cloud Run** (vs. Cloud Functions, Vercel)
-- **ADR: Five madhab support in faraid engine** (vs. single-madhab simplification)
-- **ADR: Supabase for Mirath data layer** (vs. Firebase, Planetscale)
+- **Transport choice for an API.** (e.g., HTTP vs SSE vs stdio for an MCP
+  server, REST vs GraphQL vs gRPC for a service)
+- **Domain-model boundaries.** When two concepts look similar but mean
+  different things, encode the separation as an ADR so it survives refactors.
+- **Auth provider.** (e.g., Clerk vs Auth0 vs Supabase Auth vs roll-your-own)
+- **CI / agent execution model.** (e.g., GitHub Actions vs a self-hosted
+  pipeline vs a managed agent platform)
+- **Hosting / deploy target.** (e.g., Cloud Run vs Lambda vs Vercel vs
+  Fly.io — the trade-offs are real and worth documenting)
+- **Scope of feature support.** When you intentionally choose breadth over
+  simplicity (or vice versa), capture the reasoning so it isn't reversed by
+  accident later.
+- **Primary data layer.** (e.g., Supabase vs Firebase vs Planetscale vs
+  self-hosted Postgres)
 
 ## Environment Detection & Output
 

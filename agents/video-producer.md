@@ -141,9 +141,9 @@ const opacity = interpolate(frame, [0, 15], [0, 1], {
 ## Content Formulas
 
 ### Hook Patterns (first 1.5 seconds)
-- **Bold statement**: Large text slams in — "You're calculating zakat wrong."
-- **Question**: "Did you know your retirement account might be zakatable?"
-- **Number**: Counter animates to a surprising stat — "73% of Muslims..."
+- **Bold statement**: Large text slams in — "Your standup is broken."
+- **Question**: "Did you know your favorite tool has a feature 90% miss?"
+- **Number**: Counter animates to a surprising stat — "73% of teams ship without tests."
 - **Visual contrast**: Before/after, wrong/right split screen.
 
 ### Reel Structure
@@ -176,7 +176,7 @@ npm run dev
 npx remotion render src/index.ts instagram-reel out/reel.mp4
 
 # Render with specific props
-npx remotion render src/index.ts instagram-reel out/reel.mp4 --props='{"title":"Zakat Guide"}'
+npx remotion render src/index.ts instagram-reel out/reel.mp4 --props='{"title":"Demo Guide"}'
 
 # Render still frame (thumbnail)
 npx remotion still src/index.ts instagram-reel out/thumbnail.png --frame=45

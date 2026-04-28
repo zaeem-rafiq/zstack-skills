@@ -111,7 +111,7 @@ Issue 1 (P0)
 ### Claude Code with Linear
 - Check if Linear MCP tools are available
 - If available, offer to create as Linear issues
-- **Always assign to a non-null project** (e.g., "Rafiq: App Store Stability & Growth").
+- **Always assign to a non-null project** (e.g., "Acme: App Store Stability & Growth").
   The Orchestrator ignores issues without a project. This is a hard constraint.
 
 ### Fallback

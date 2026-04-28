@@ -25,13 +25,13 @@ Every manifest MUST declare these fields, in this order:
 | Key | Type | Example | Read by |
 |-----|------|---------|---------|
 | **Archetype** | enum | `nextjs-web` \| `ios-swiftui` \| `node-service` \| `content-site` | bootstrap-project, /init |
-| **Name** | string | `Mirath` | shipping-and-launch, direct-response-copy |
-| **Domain** | string (hostname) | `getmirath.com` | seo-content, shipping-and-launch |
-| **Repo** | string (github path) | `github.com/zaeem-rafiq/mirath` | shipping-and-launch, /review |
-| **Linear Project ID** | UUID | `90296466-335c-44c8-a4c7-76c33fe27954` | prd-to-issues |
-| **Linear Team ID** | UUID | `1a6dcb82-d5c4-46cf-92ab-14ddaf3dc55f` | prd-to-issues |
-| **Linear Keyword** | string (lowercase) | `mirath` | orchestrator (keyword routing) |
-| **Local Path** | absolute path | `/Users/zaeemkhan/Documents/mirath` | orchestrator, bootstrap-project |
+| **Name** | string | `Acme` | shipping-and-launch, direct-response-copy |
+| **Domain** | string (hostname) | `acme.com` | seo-content, shipping-and-launch |
+| **Repo** | string (github path) | `github.com/your-org/acme` | shipping-and-launch, /review |
+| **Linear Project ID** | UUID | `00000000-0000-0000-0000-000000000000` | prd-to-issues |
+| **Linear Team ID** | UUID | `00000000-0000-0000-0000-000000000000` | prd-to-issues |
+| **Linear Keyword** | string (lowercase) | `acme` | orchestrator (keyword routing) |
+| **Local Path** | absolute path | `/path/to/your/project` | orchestrator, bootstrap-project |
 | **Deploy Target** | enum | `vercel` \| `app-store` \| `launchd` \| `github-pages` \| `cloudflare-pages` \| `none` | shipping-and-launch |
 | **AI Features** | boolean | `true` \| `false` | tdd (chains eval-framework if true) |
 | **Phase** | string | `pre-launch` \| `launched` \| `maintenance` \| `sunset` | grill-me, shipping-and-launch |
@@ -40,9 +40,9 @@ Optional additional keys a project may add (not reserved):
 
 | Key | Example | Notes |
 |-----|---------|-------|
-| **Hard Deadline** | `2026-05-25` | Mirath has one; most don't |
+| **Hard Deadline** | `YYYY-MM-DD` | Use when a fixed external deadline matters |
 | **Supabase Project URL** | `https://supabase.com/...` | Next.js archetype default |
-| **Firebase Project ID** | `rafiq-prod` | iOS archetype default |
+| **Firebase Project ID** | `your-firebase-project` | iOS archetype default |
 
 ---
 
@@ -79,23 +79,23 @@ Skills use this to know where to look FIRST before searching broadly.
 
 ---
 
-## Full example (Mirath)
+## Full example
 
 ```markdown
 ## Project Manifest
 
 - **Archetype**: nextjs-web
-- **Name**: Mirath
-- **Domain**: getmirath.com
-- **Repo**: github.com/zaeem-rafiq/mirath
-- **Linear Project ID**: 90296466-335c-44c8-a4c7-76c33fe27954
-- **Linear Team ID**: 1a6dcb82-d5c4-46cf-92ab-14ddaf3dc55f
-- **Linear Keyword**: mirath
-- **Local Path**: /Users/zaeemkhan/Documents/mirath
+- **Name**: Acme
+- **Domain**: acme.com
+- **Repo**: github.com/your-org/acme
+- **Linear Project ID**: 00000000-0000-0000-0000-000000000000
+- **Linear Team ID**: 00000000-0000-0000-0000-000000000000
+- **Linear Keyword**: acme
+- **Local Path**: /path/to/your/project
 - **Deploy Target**: vercel
 - **AI Features**: true
 - **Phase**: pre-launch
-- **Hard Deadline**: 2026-05-25
+- **Hard Deadline**: YYYY-MM-DD
 
 ### Stack
 | Layer | Technology |
@@ -112,7 +112,7 @@ Skills use this to know where to look FIRST before searching broadly.
 
 ### Knowledge Entry Points
 - `docs/PRODUCT_VISION.md`
-- `docs/ISLAMIC_FINANCE.md`
+- `docs/DOMAIN_RULES.md`
 - `knowledge/UBIQUITOUS-LANGUAGE.md`
 - `tasks/todo.md`
 - `tasks/lessons.md`

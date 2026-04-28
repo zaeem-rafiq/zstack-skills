@@ -3,9 +3,8 @@ name: eval-framework
 description: >
   Design and implement AI evaluation systems using the Hamel Husain methodology:
   error analysis → binary pass/fail evals → LLM-as-judge → production monitoring.
-  Use this skill whenever building, shipping, or iterating on any LLM-powered feature —
-  Ask Rafiq, Mirath education, Orchestrator agent, stock screening, tatheer, faraid
-  calculator, or any new AI pipeline. Also trigger when someone says "eval", "evals",
+  Use this skill whenever building, shipping, or iterating on any LLM-powered feature.
+  Also trigger when someone says "eval", "evals",
   "how do I know this is working", "quality check", "LLM judge", "error analysis",
   "trace logging", "is this AI good enough to ship", "production monitoring for AI",
   "my AI is hallucinating", "how do I test this LLM", or when post-deployment QA
@@ -32,8 +31,8 @@ your brain was doing — at scale, consistently, 24/7.
 
 **Core principles:**
 - Binary pass/fail beats scoring scales. Business decisions are binary: fix it or don't.
-- Domain-specific failure modes beat generic metrics. "Did the stock screen match AAOIFI
-  criteria" > "was the response helpful."
+- Domain-specific failure modes beat generic metrics. "Did the response cite the correct
+  policy version" > "was the response helpful."
 - Error analysis is the highest-leverage activity. More important than the LLM judge,
   more important than the observability tool.
 - The PM/CEO owns error analysis. Engineers don't have full context on whether the
@@ -55,22 +54,21 @@ A trace is the complete record of a single interaction: user input → system pr
 - Final output shown to the user
 - Metadata: timestamp, user ID, session ID, model version, prompt version
 
-**For Rafiq Labs products specifically:**
-- Ask Rafiq: full conversation thread, madhab context, sources cited
-- Stock screening: ticker, screening criteria applied, AAOIFI thresholds, pass/fail result
-- Tatheer/purification: fund holdings evaluated, purification calculation steps, final amount
-- Faraid calculator: family composition input, madhab selected, share calculations, PDF output
-- Mirath AI education: question asked, explanation generated, citations
-- Orchestrator: Linear issue input, Claude Code output, test results, git diff
+**Examples by product type:**
+- Conversational assistant: full conversation thread, retrieved context, sources cited
+- Classification / screening API: input, criteria applied, threshold values, pass/fail result
+- Calculation engine: inputs, intermediate steps, final value, document/file generated
+- Educational explainer: question asked, explanation generated, citations
+- Coding agent: task input, generated output, test results, diff produced
 
 **Minimum viable tracing:**
 If you don't have a tracing system yet, start with structured JSON logging to a file or
-Supabase table. You can build a proper observability pipeline later. The important thing
+a database table. You can build a proper observability pipeline later. The important thing
 is that traces exist and are reviewable.
 
 ```
 Trace storage priority:
-1. Supabase table (already in stack) — structured, queryable
+1. Database table (whatever you already use) — structured, queryable
 2. JSON log files — simple, exportable
 3. Spreadsheet — Hamel literally does evals in Google Sheets. Don't overthink it.
 ```
@@ -91,12 +89,12 @@ This is where you learn what's actually broken. Most teams skip this. Don't.
 
 | Category | Example | Type | Eval approach |
 |----------|---------|------|---------------|
-| Wrong calculation | Zakat computed at 2% instead of 2.5% | Deterministic | Code assertion |
-| Wrong madhab applied | Hanafi rules used when user selected Shafi'i | Deterministic | Code assertion |
-| Hallucinated source | Cited a fatwa that doesn't exist | Semi-deterministic | Code + LLM judge |
+| Wrong calculation | Tax computed at 7% instead of 8.25% | Deterministic | Code assertion |
+| Wrong rule applied | Standard rate used when user selected enterprise tier | Deterministic | Code assertion |
+| Hallucinated source | Cited a policy section that doesn't exist | Semi-deterministic | Code + LLM judge |
 | Poor explanation | Technically correct but confusing to user | Subjective | LLM-as-judge |
-| Missed escalation | Should have said "consult a scholar" but didn't | Subjective | LLM-as-judge |
-| Format error | PDF export missing wasiyyah section | Deterministic | Code assertion |
+| Missed escalation | Should have said "consult a specialist" but didn't | Subjective | LLM-as-judge |
+| Format error | PDF export missing required disclosure section | Deterministic | Code assertion |
 
 **After categorization:**
 - Rank categories by frequency
@@ -114,11 +112,11 @@ Use when there's a clear right/wrong answer. These are fast, cheap, and reliable
 
 ```
 Examples:
-- Zakat rate MUST be 2.5% (not 2%, not 3%)
-- Faraid shares MUST sum to 1.0 (or the correct denominator)
-- Stock screening: financial ratios MUST use the correct AAOIFI thresholds
+- Tax rate MUST match the configured value for the customer's region (not a stale default)
+- Allocation shares MUST sum to 1.0 (or the correct denominator)
+- API response: numerical fields MUST match the source-of-truth thresholds
 - Date/time parsing: "July 4th" MUST resolve to 2026-07-04
-- PDF export: all sections MUST be present in output
+- PDF export: all required sections MUST be present in output
 ```
 
 Structure assertions as:
@@ -162,9 +160,9 @@ false = the response does not have this problem
 
 4. Deploy the validated judge on new traces at scale.
 
-**Judge prompt template for Rafiq Labs:**
+**Judge prompt template:**
 ```
-You are evaluating an Islamic finance AI assistant's response.
+You are evaluating an AI assistant's response.
 
 Task: Determine if the response contains a [SPECIFIC FAILURE MODE].
 
@@ -199,7 +197,7 @@ Deploy judges → Monitor → Discover new failures → Error analysis → ...
 - Writing a PRD for an AI feature → add eval criteria to the PRD
 - About to ship an AI feature → "what are our evals?"
 - Switching models or updating prompts → run existing evals before and after
-- New product launch (Mirath Hajj window) → eval plan alongside launch plan
+- New product launch with a hard external deadline → eval plan alongside launch plan
 
 ### Reactive triggers (after something breaks)
 - User reports wrong output → triage-issue + create eval for that failure mode

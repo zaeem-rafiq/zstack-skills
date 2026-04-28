@@ -182,7 +182,7 @@ be handed off to the next skill in the pipeline (typically write-a-prd).
 | "We're just exploring — we don't need this level of rigor." | Exploration without structure produces ideas that feel clear in conversation but fall apart when you try to build them. The brief is how exploration becomes actionable. |
 | "The user/market will tell us what to build." | Markets give signal, not specs. You still need to decide what to build first. The grill helps you interpret the signal, not replace it. |
 | "This is a small feature, not a product — skip the grill." | Small features with vague scope are the #1 source of Orchestrator rework. A 5-minute grill on a small feature costs nothing and prevents "wait, this isn't what I meant" after implementation. |
-| "The competitive analysis already tells us what to build." | Competitors tell you what exists, not what's missing. The grill probes what's non-obvious — the gap that competitors haven't filled. That's where Rafiq's moat lives. |
+| "The competitive analysis already tells us what to build." | Competitors tell you what exists, not what's missing. The grill probes what's non-obvious — the gap that competitors haven't filled. That's where the moat lives. |
 | "I'll figure it out as I build." | Building without clarity means you're running expensive experiments with code instead of cheap experiments with questions. The grill front-loads the learning. |
 
 ## Red Flags
