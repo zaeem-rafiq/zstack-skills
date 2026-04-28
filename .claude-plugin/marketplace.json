@@ -1,5 +1,10 @@
 {
+  "name": "zstack-skills",
+  "owner": { "name": "Zaeem Khan" },
+  "metadata": {
+    "description": "Personal Claude Code skills library"
+  },
   "plugins": [
-    { "name": "zstack-skills", "path": "." }
+    { "name": "zstack-skills", "source": "." }
   ]
 }
