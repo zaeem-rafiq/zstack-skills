@@ -82,32 +82,6 @@ substitutes placeholders, copies skills, creates knowledge/ and tasks/ directori
 **Read its output**. It reports what it did — if any step failed, stop and
 investigate before continuing. Do not mark the task complete on partial success.
 
-### 3.5. Install gstack (web archetypes only)
-
-Archetype-selective: install gstack only for `nextjs-web` and `content-site`.
-Skip for `ios-swiftui` and `node-service` — these don't target web UIs and
-don't benefit from the browser pillar.
-
-If archetype ∈ {`nextjs-web`, `content-site`}:
-
-```bash
-cd <path>
-if [ ! -d ".claude/skills/gstack" ]; then
-  cp -Rf ~/.claude/skills/gstack .claude/skills/gstack
-  rm -rf .claude/skills/gstack/.git
-  cd .claude/skills/gstack && ./setup
-fi
-```
-
-If archetype ∈ {`ios-swiftui`, `node-service`}: skip entirely. Add a marker
-comment to the project's CLAUDE.md so it's discoverable later:
-
-```
-<!-- gstack: skipped (archetype=<name>, non-web) -->
-```
-
-Record the install (or skip) outcome in the report (Step 7).
-
 ### 4. Register with the orchestrator
 
 Invoke the orchestrator registration script:
