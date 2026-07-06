@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 #
-# sync-skills.sh — propagate skills from the canonical zstack-skills repo.
+# sync-skills.sh — propagate skills, agents, and commands from zstack.
 #
-# Single source of truth:  ~/Documents/zstack-skills/skills/
-# Targets:
-#   1) ~/.claude/skills              (live invocation set)  — UPDATE existing only
-#   2) ~/.claude/repo-skill-template (seed for new repos)   — full mirror
+# Single source of truth: ~/Documents/zstack-skills
+#   skills/            -> ~/.claude/skills and ~/.claude/repo-skill-template/<skill>
+#   agents/            -> ~/.claude/agents and ~/.claude/repo-skill-template/agents
+#   .claude/commands/  -> ~/.claude/commands and ~/.claude/repo-skill-template/commands
 #
-# Why "update existing only" for the live set: ~/.claude/skills also holds
-# gstack / google-agents-cli / firecrawl skills that are NOT part of the zstack
-# family. We must never add/remove those, so we only refresh skills already there.
+# The live Claude dirs also hold non-zstack content. Sync is additive at the top
+# level: zstack-owned items are added/refreshed, unrelated user/plugin items stay.
+# Skill directory contents are mirrored with --delete once the zstack skill exists.
 #
 # All three locations are git repos — after running, review `git diff` in each
 # target and commit. Nothing here commits for you.
@@ -20,39 +20,73 @@
 #
 set -euo pipefail
 
-SRC="$HOME/Documents/zstack-skills/skills"
-LIVE="$HOME/.claude/skills"
+ROOT="$HOME/Documents/zstack-skills"
+SRC_SKILLS="$ROOT/skills"
+SRC_AGENTS="$ROOT/agents"
+SRC_COMMANDS="$ROOT/.claude/commands"
+LIVE_SKILLS="$HOME/.claude/skills"
+LIVE_AGENTS="$HOME/.claude/agents"
+LIVE_COMMANDS="$HOME/.claude/commands"
 TMPL="$HOME/.claude/repo-skill-template"
 
-[ -d "$SRC" ] || { echo "FATAL: source not found: $SRC" >&2; exit 1; }
+[ -d "$SRC_SKILLS" ] || { echo "FATAL: source not found: $SRC_SKILLS" >&2; exit 1; }
+[ -d "$SRC_AGENTS" ] || { echo "FATAL: source not found: $SRC_AGENTS" >&2; exit 1; }
 
-# -c (checksum): transfer only on real content diff, so content-identical copies
-# with differing mtimes are left untouched (no needless churn; git tracks content).
+DRY_RUN=0
 RSYNC_OPTS=(-a -c --delete)
 if [ "${1:-}" = "--dry-run" ]; then
+  DRY_RUN=1
   RSYNC_OPTS+=(-n -i)
   echo "=== DRY RUN (no files written) ==="
+elif [ "$#" -gt 0 ]; then
+  echo "Usage: $0 [--dry-run]" >&2
+  exit 2
 fi
 
-live_updated=0 tmpl_synced=0
-for d in "$SRC"/*/; do
-  name=$(basename "$d")
-
-  # Seed for new repos: always mirror.
-  rsync "${RSYNC_OPTS[@]}" "$d" "$TMPL/$name/"
-  tmpl_synced=$((tmpl_synced + 1))
-
-  # Live set: refresh only if the skill is already present.
-  if [ -d "$LIVE/$name" ]; then
-    rsync "${RSYNC_OPTS[@]}" "$d" "$LIVE/$name/"
-    live_updated=$((live_updated + 1))
+ensure_dir() {
+  local dir="$1"
+  if [ "$DRY_RUN" -eq 1 ]; then
+    [ -d "$dir" ] || echo "would create: $dir"
+  else
+    mkdir -p "$dir"
   fi
-done
+}
 
-echo
-echo "template: mirrored $tmpl_synced skills -> $TMPL"
-echo "live:     refreshed $live_updated existing skills -> $LIVE"
+sync_skill_dirs() {
+  local src="$1" dest="$2" label="$3" count=0
+  ensure_dir "$dest"
+  for d in "$src"/*/; do
+    [ -d "$d" ] || continue
+    local name
+    name=$(basename "$d")
+    rsync "${RSYNC_OPTS[@]}" "$d" "$dest/$name/"
+    count=$((count + 1))
+  done
+  echo "$label: synced $count skills -> $dest"
+}
+
+sync_markdown_files() {
+  local src="$1" dest="$2" label="$3" count=0
+  [ -d "$src" ] || { echo "$label: skipped missing source -> $src"; return; }
+  ensure_dir "$dest"
+  for f in "$src"/*.md; do
+    [ -f "$f" ] || continue
+    local name
+    name=$(basename "$f")
+    rsync "${RSYNC_OPTS[@]}" "$f" "$dest/$name"
+    count=$((count + 1))
+  done
+  echo "$label: synced $count files -> $dest"
+}
+
+sync_skill_dirs "$SRC_SKILLS" "$TMPL" "template skills"
+sync_skill_dirs "$SRC_SKILLS" "$LIVE_SKILLS" "live skills"
+sync_markdown_files "$SRC_AGENTS" "$TMPL/agents" "template agents"
+sync_markdown_files "$SRC_AGENTS" "$LIVE_AGENTS" "live agents"
+sync_markdown_files "$SRC_COMMANDS" "$TMPL/commands" "template commands"
+sync_markdown_files "$SRC_COMMANDS" "$LIVE_COMMANDS" "live commands"
+
 echo
 echo "Review and commit:"
-echo "  git -C \"$LIVE\" diff --stat   && git -C \"$LIVE\" add -A && git -C \"$LIVE\" commit -m 'chore: sync skills from zstack canonical'"
-echo "  git -C \"$TMPL\" diff --stat   && git -C \"$TMPL\" add -A && git -C \"$TMPL\" commit -m 'chore: sync skills from zstack canonical'"
+echo "  git -C "$LIVE_SKILLS" diff --stat && git -C "$LIVE_SKILLS" add -A && git -C "$LIVE_SKILLS" commit -m 'chore: sync zstack skills'"
+echo "  git -C "$HOME/.claude" diff --stat -- repo-skill-template agents commands CLAUDE.md && git -C "$HOME/.claude" add -A -- repo-skill-template agents commands CLAUDE.md && git -C "$HOME/.claude" commit -m 'chore: sync zstack commands and agents'"
