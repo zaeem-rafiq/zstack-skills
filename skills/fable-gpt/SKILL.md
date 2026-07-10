@@ -32,7 +32,7 @@ codex --version
 
 If missing or errors, run `/codex:setup`. If not authenticated, ask the user to run `!codex login` — never attempt to authenticate on their behalf.
 
-Model: prefer **GPT-5.5 at xhigh reasoning**. This is the Codex CLI default (as of codex-cli 0.143.0); only pass an explicit model/effort override if the default has changed.
+Model: prefer **gpt-5.6-sol at xhigh reasoning**. This is the Codex CLI default (as of codex-cli 0.144.0, set in `~/.codex/config.toml`: `model = "gpt-5.6-sol"`, `model_reasoning_effort = "xhigh"`); only pass an explicit model/effort override if the default has changed.
 
 ## Delegating a task to Codex
 
