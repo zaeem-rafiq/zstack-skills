@@ -89,4 +89,4 @@ sync_markdown_files "$SRC_COMMANDS" "$LIVE_COMMANDS" "live commands"
 echo
 echo "Review and commit:"
 echo "  git -C "$LIVE_SKILLS" diff --stat && git -C "$LIVE_SKILLS" add -A && git -C "$LIVE_SKILLS" commit -m 'chore: sync zstack skills'"
-echo "  git -C "$HOME/.claude" diff --stat -- repo-skill-template agents commands CLAUDE.md && git -C "$HOME/.claude" add -A -- repo-skill-template agents commands CLAUDE.md && git -C "$HOME/.claude" commit -m 'chore: sync zstack commands and agents'"
+echo "  git -C "$HOME/.claude" diff --stat -- repo-skill-template agents commands && git -C "$HOME/.claude" add -A -- repo-skill-template agents commands && git -C "$HOME/.claude" commit -m 'chore: sync zstack commands and agents'"
