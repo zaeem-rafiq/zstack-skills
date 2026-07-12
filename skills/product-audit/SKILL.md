@@ -1,19 +1,19 @@
 ---
-name: product-overhaul
+name: product-audit
 description: >
   One-command pipeline that layers the audit skill family with the session's
   delegation policies: run ux-audit (and optionally growth-audit /
   app-readiness-audit) with lanes delegated to worker-research, pass the review
   gate, then implement a capped set of the resulting todos/ tickets via the
   fable-gpt Codex workflow with independent worker-verify proof per ticket. Use
-  when the user says "product overhaul", "overhaul this app", "audit and fix",
+  when the user says "product audit", "audit and fix", "overhaul this app",
   "run the full audit pipeline", or wants audit → implementation in one go.
   Do NOT use for an audit-only request (invoke the audit skill directly), a
   single known bug or feature (no audit needed), or when the Codex plugin/CLI
   is unavailable (fall back to worker-implement and say so).
 ---
 
-# Product Overhaul
+# Product Audit
 
 You orchestrate the full audit → implement → verify pipeline in one session.
 This skill encodes the layering; the method lives in the skills it invokes.
